@@ -90,7 +90,7 @@ export class NearEthAdapter {
       signArgs,
       nearGas
     );
-    console.log("Signature received");
+    console.log("Raw signature received");
     return this.relayTransaction({ transaction, signature: { big_r, big_s } });
   }
 
@@ -112,7 +112,6 @@ export class NearEthAdapter {
   }> {
     console.log("Creating Payload for sender:", this.address);
     const { transaction, signArgs } = await this.createTxPayload(txData);
-    console.log("Requesting signature from Near...");
     return {
       transaction,
       requestPayload: await this.mpcContract.encodeSignatureRequestTx(
