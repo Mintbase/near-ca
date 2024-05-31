@@ -105,6 +105,6 @@ function gasOrDefault(gas?: bigint): string {
   if (gas !== undefined) {
     return gas.toString();
   }
-  // Default of 300 TGAS
-  return (TGAS * 300n).toString();
+  // Default of 250 TGAS
+  return (TGAS * 250n).toString();
 }
