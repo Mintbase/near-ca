@@ -31,7 +31,9 @@ interface MultichainContractInterface extends Contract {
   public_key: () => Promise<string>;
 
   // Define the signature for the `sign` change method
-  sign: (args: ChangeMethodArgs<SignArgs>) => Promise<[string, string]>;
+  sign: (
+    args: ChangeMethodArgs<{ request: SignArgs }>
+  ) => Promise<[string, string]>;
 }
 
 /**
@@ -69,8 +71,8 @@ export class MultichainContract {
     gas?: bigint
   ): Promise<MPCSignature> => {
     const [big_r, big_s] = await this.contract.sign({
-      args: signArgs,
       signerAccount: this.connectedAccount,
+      args: { request: signArgs },
       gas: gasOrDefault(gas),
       attachedDeposit: NO_DEPOSIT,
     });
@@ -89,7 +91,7 @@ export class MultichainContract {
           type: "FunctionCall",
           params: {
             methodName: "sign",
-            args: signArgs,
+            args: { request: signArgs },
             gas: gasOrDefault(gas),
             deposit: NO_DEPOSIT,
           },
