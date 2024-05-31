@@ -33,7 +33,7 @@ interface MultichainContractInterface extends Contract {
   // Define the signature for the `sign` change method
   sign: (
     args: ChangeMethodArgs<{ request: SignArgs }>
-  ) => Promise<[string, string]>;
+  ) => Promise<{ big_r: string; s: string }>;
 }
 
 /**
@@ -70,7 +70,7 @@ export class MultichainContract {
     signArgs: SignArgs,
     gas?: bigint
   ): Promise<MPCSignature> => {
-    const [big_r, big_s] = await this.contract.sign({
+    const { big_r, s: big_s } = await this.contract.sign({
       signerAccount: this.connectedAccount,
       args: { request: signArgs },
       gas: gasOrDefault(gas),
