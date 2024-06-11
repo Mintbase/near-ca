@@ -5,7 +5,7 @@ import {
   najPublicKeyStrToUncompressedHexPoint,
   uncompressedHexPointToEvmAddress,
 } from "./utils/kdf";
-import { NO_DEPOSIT, TGAS } from "./chains/near";
+import { TGAS, ONE_YOCTO } from "./chains/near";
 import {
   MPCSignature,
   NearContractFunctionPayload,
@@ -20,10 +20,10 @@ export interface ChangeMethodArgs<T> {
   args: T;
   /// GasLimit on transaction execution.
   gas: string;
-  /// Deposit (i.e. payable amount) to attach to transaction.
-  attachedDeposit: string;
   /// Account Signing the call
   signerAccount: Account;
+  /// attachedDeposit (i.e. payable amount) to attach to transaction.
+  amount: string;
 }
 
 interface MultichainContractInterface extends Contract {
@@ -74,7 +74,7 @@ export class MultichainContract {
       signerAccount: this.connectedAccount,
       args: { request: signArgs },
       gas: gasOrDefault(gas),
-      attachedDeposit: NO_DEPOSIT,
+      amount: ONE_YOCTO,
     });
     return { big_r, big_s };
   };
@@ -93,7 +93,7 @@ export class MultichainContract {
             methodName: "sign",
             args: { request: signArgs },
             gas: gasOrDefault(gas),
-            deposit: NO_DEPOSIT,
+            deposit: ONE_YOCTO,
           },
         },
       ],
