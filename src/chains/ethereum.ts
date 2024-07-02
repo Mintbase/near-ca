@@ -76,7 +76,7 @@ export class NearEthAdapter {
    * acquires signature from Near MPC Contract and submits transaction to public mempool.
    *
    * @param {BaseTx} txData - Minimal transaction data to be signed by Near MPC and executed on EVM.
-   * @param {bigint} nearGas - manually specified gas to be sent with signature request (default 300 TGAS).
+   * @param {bigint} nearGas - manually specified gas to be sent with signature request.
    * Note that the signature request is a recursive function.
    */
   async signAndSendTransaction(
@@ -90,7 +90,7 @@ export class NearEthAdapter {
       signArgs,
       nearGas
     );
-    console.log("Signature received");
+    console.log("Raw signature received");
     return this.relayTransaction({ transaction, signature: { big_r, big_s } });
   }
 
@@ -100,7 +100,7 @@ export class NearEthAdapter {
    * acquires signature from Near MPC Contract and submits transaction to public mempool.
    *
    * @param {BaseTx} txData - Minimal transaction data to be signed by Near MPC and executed on EVM.
-   * @param {bigint} nearGas - manually specified gas to be sent with signature request (default 300 TGAS).
+   * @param {bigint} nearGas - manually specified gas to be sent with signature request.
    * Note that the signature request is a recursive function.
    */
   async getSignatureRequestPayload(
@@ -112,7 +112,6 @@ export class NearEthAdapter {
   }> {
     console.log("Creating Payload for sender:", this.address);
     const { transaction, signArgs } = await this.createTxPayload(txData);
-    console.log("Requesting signature from Near...");
     return {
       transaction,
       requestPayload: await this.mpcContract.encodeSignatureRequestTx(
