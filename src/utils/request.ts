@@ -90,7 +90,7 @@ export async function requestRouter({
         payload: toPayload(keccak256(rlpTx)),
         evmMessage: rlpTx,
         recoveryData: {
-          type: "eth_sendTransaction",
+          type: method,
           data: rlpTx,
         },
       };
@@ -103,7 +103,7 @@ export async function requestRouter({
         evmMessage: dataString,
         payload: toPayload(hashTypedData(typedData)),
         recoveryData: {
-          type: "eth_signTypedData",
+          type: method,
           data: {
             address: sender,
             ...typedData,
